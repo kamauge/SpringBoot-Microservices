@@ -2,7 +2,6 @@ package com.amg.microservices.controller;
 
 import com.amg.microservices.entity.User;
 import com.amg.microservices.service.implemetation.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +46,11 @@ public class UserController {
         User updateUser = userServiceImpl.updateUser(user);
 
         return new ResponseEntity<>(updateUser,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-user/{id")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        userServiceImpl.deleteUser(id);
+        return new ResponseEntity<>("User deleted successfully",HttpStatus.OK);
     }
 }
