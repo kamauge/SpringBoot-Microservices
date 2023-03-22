@@ -1,5 +1,6 @@
 package com.amg.microservices.controller;
 
+import com.amg.microservices.DTO.UserDto;
 import com.amg.microservices.entity.User;
 import com.amg.microservices.service.implemetation.UserServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,10 @@ public class UserController {
 
 
     @PostMapping("/create-user")
-    public ResponseEntity<User> createUser(@RequestBody User user)
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto)
     {
-        userServiceImpl.createUser(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        userServiceImpl.createUser(userDto);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-user/{id}")
@@ -48,7 +49,7 @@ public class UserController {
         return new ResponseEntity<>(updateUser,HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete-user/{id")
+    @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         userServiceImpl.deleteUser(id);
         return new ResponseEntity<>("User deleted successfully",HttpStatus.OK);

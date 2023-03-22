@@ -1,5 +1,6 @@
 package com.amg.microservices.service.implemetation;
 
+import com.amg.microservices.DTO.UserDto;
 import com.amg.microservices.entity.User;
 import com.amg.microservices.repository.UserRepository;
 import com.amg.microservices.service.UserService;
@@ -21,8 +22,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDto createUser(UserDto userDto) {
+
+        //Convert User DTO into User JPA Entity
+        User user = new User(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), userDto.getEmail());
+
+
+        User savedUser = userRepository.save(user);
+
+        //Covert User JPA Entity to User DTO
+        UserDto savedUserDTO = new UserDto(savedUser.getId(), savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail());
+
+
+        return savedUserDTO;
     }
 
     @Override
