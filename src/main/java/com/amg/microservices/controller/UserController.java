@@ -28,25 +28,25 @@ public class UserController {
     }
 
     @GetMapping("/get-user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-       User user = userServiceImpl.getUserById(id);
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+       UserDto userDto = userServiceImpl.getUserById(id);
 
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(userDto,HttpStatus.OK);
 
     }
 
     @GetMapping("/list-users")
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userServiceImpl.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers(){
+        List<UserDto> users = userServiceImpl.getAllUsers();
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
     @PutMapping("/update-user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
-        user.setId(id);
-        User updateUser = userServiceImpl.updateUser(user);
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+        userDto.setId(id);
+        UserDto updateUserDto = userServiceImpl.updateUser(userDto);
 
-        return new ResponseEntity<>(updateUser,HttpStatus.OK);
+        return new ResponseEntity<>(updateUserDto,HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-user/{id}")

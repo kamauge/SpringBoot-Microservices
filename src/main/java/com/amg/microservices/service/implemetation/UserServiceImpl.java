@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,25 +39,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public UserDto getUserById(Long id) {
+        //Convert User JPA Entity to DTO
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.get();
+        User user = optionalUser.get();
+
+        return UserMapper.mapToUserDTO(user);
+
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        //Convert JPA Entity to DTO
+        return users.stream().map(UserMapper::mapToUserDTO).collect(Collectors.toList());
     }
 
     @Override
-    public User updateUser(User user) {
+    public UserDto updateUser(UserDto userDto) {
+
+        //Convert UserDTO to User JPA Entity
+        User user = UserMapper.mapToUser(userDto);
         User existingUser = userRepository.findById(user.getId()).get();
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
         User updatedUser = userRepository.save(existingUser);
 
-        return updatedUser;
+        return UserMapper.mapToUserDTO(updatedUser);
     }
 
     @Override
