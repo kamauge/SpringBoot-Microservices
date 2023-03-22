@@ -2,6 +2,7 @@ package com.amg.microservices.service.implemetation;
 
 import com.amg.microservices.DTO.UserDto;
 import com.amg.microservices.entity.User;
+import com.amg.microservices.mapper.UserMapper;
 import com.amg.microservices.repository.UserRepository;
 import com.amg.microservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,13 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userDto) {
 
         //Convert User DTO into User JPA Entity
-        User user = new User(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), userDto.getEmail());
+        User user = UserMapper.mapToUser(userDto);
 
 
         User savedUser = userRepository.save(user);
 
         //Covert User JPA Entity to User DTO
-        UserDto savedUserDTO = new UserDto(savedUser.getId(), savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail());
-
+        UserDto savedUserDTO = UserMapper.mapToUserDTO(savedUser);
 
         return savedUserDTO;
     }
