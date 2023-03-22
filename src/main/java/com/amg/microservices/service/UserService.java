@@ -1,18 +1,19 @@
 package com.amg.microservices.service;
 
+import com.amg.microservices.DTO.UserDto;
 import com.amg.microservices.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-     User createUser(User user);
+     UserDto createUser(UserDto userDto);
 
-     User getUserById(Long id);
+     UserDto getUserById(Long id);
 
-     List<User> getAllUsers();
+     List<UserDto> getAllUsers();
 
-     User updateUser(User user);
+     UserDto updateUser(UserDto userDto);
 
      void deleteUser(Long id);
 }
