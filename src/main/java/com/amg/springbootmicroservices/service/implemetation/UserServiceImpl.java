@@ -2,6 +2,7 @@ package com.amg.springbootmicroservices.service.implemetation;
 
 import com.amg.springbootmicroservices.DTO.UserDto;
 import com.amg.springbootmicroservices.entity.User;
+import com.amg.springbootmicroservices.exception.ResourceNotFoundException;
 import com.amg.springbootmicroservices.mapper.UserMapper;
 import com.amg.springbootmicroservices.repository.UserRepository;
 import com.amg.springbootmicroservices.service.UserService;
@@ -46,8 +47,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         //Convert User JPA Entity to DTO
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.get();
+       User user = userRepository.findById(id).orElseThrow(
+               () -> new ResourceNotFoundException("User","id",id)
+       );
+       // User user = optionalUser.get();
 
        // return UserMapper.mapToUserDTO(user);
         return modelMapper.map(user,UserDto.class);
@@ -70,7 +73,9 @@ public class UserServiceImpl implements UserService {
         //Convert UserDTO to User JPA Entity
        // User user = UserMapper.mapToUser(userDto);
         User user = modelMapper.map(userDto,User.class);
-        User existingUser = userRepository.findById(user.getId()).get();
+        User existingUser = userRepository.findById(user.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("User","id",user.getId())
+        );
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
@@ -82,6 +87,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
+        User existingUser = userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User","userid",id)
+        );
         userRepository.deleteById(id);
     }
 }
