@@ -2,6 +2,7 @@ package com.amg.springbootmicroservices.service.implemetation;
 
 import com.amg.springbootmicroservices.DTO.UserDto;
 import com.amg.springbootmicroservices.entity.User;
+import com.amg.springbootmicroservices.exception.EmailAlreadyExistsException;
 import com.amg.springbootmicroservices.exception.ResourceNotFoundException;
 import com.amg.springbootmicroservices.mapper.UserMapper;
 import com.amg.springbootmicroservices.repository.UserRepository;
@@ -33,6 +34,12 @@ public class UserServiceImpl implements UserService {
 
         //Convert User DTO into User JPA Entity
        // User user = UserMapper.mapToUser(userDto);
+
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+
+        if (optionalUser.isPresent()){
+            throw new EmailAlreadyExistsException("Email Already exists for the user");
+        }
         User user = modelMapper.map(userDto,User.class);
 
 
