@@ -2,11 +2,15 @@ package com.amg.springbootmicroservices.controller;
 
 import com.amg.springbootmicroservices.DTO.UserDto;
 import com.amg.springbootmicroservices.entity.User;
+import com.amg.springbootmicroservices.exception.ErrorDetails;
+import com.amg.springbootmicroservices.exception.ResourceNotFoundException;
 import com.amg.springbootmicroservices.service.implemetation.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -54,4 +58,19 @@ public class UserController {
         userServiceImpl.deleteUser(id);
         return new ResponseEntity<>("User deleted successfully",HttpStatus.OK);
     }
+
+
+//    @ExceptionHandler(ResourceNotFoundException.class) //handle specific exceptions, specific to the controller
+//    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
+//                                                                        WebRequest webRequest){
+//
+//        ErrorDetails errorDetails = new ErrorDetails(
+//                LocalDateTime.now(),
+//                "USER_NOT_FOUND",
+//                resourceNotFoundException.getMessage(),
+//                webRequest.getDescription(false));
+//
+//        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+//
+//    }
 }
