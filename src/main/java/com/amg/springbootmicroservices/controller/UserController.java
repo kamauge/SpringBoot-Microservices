@@ -5,6 +5,7 @@ import com.amg.springbootmicroservices.entity.User;
 import com.amg.springbootmicroservices.exception.ErrorDetails;
 import com.amg.springbootmicroservices.exception.ResourceNotFoundException;
 import com.amg.springbootmicroservices.service.implemetation.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class UserController {
 
 
     @PostMapping("/create-user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto)
     {
         userServiceImpl.createUser(userDto);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -46,7 +47,8 @@ public class UserController {
     }
 
     @PutMapping("/update-user/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
+                                              @RequestBody @Valid  UserDto userDto){
         userDto.setId(id);
         UserDto updateUserDto = userServiceImpl.updateUser(userDto);
 
@@ -59,18 +61,4 @@ public class UserController {
         return new ResponseEntity<>("User deleted successfully",HttpStatus.OK);
     }
 
-
-//    @ExceptionHandler(ResourceNotFoundException.class) //handle specific exceptions, specific to the controller
-//    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException,
-//                                                                        WebRequest webRequest){
-//
-//        ErrorDetails errorDetails = new ErrorDetails(
-//                LocalDateTime.now(),
-//                "USER_NOT_FOUND",
-//                resourceNotFoundException.getMessage(),
-//                webRequest.getDescription(false));
-//
-//        return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
-//
-//    }
 }
